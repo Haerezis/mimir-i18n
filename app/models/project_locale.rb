@@ -1,0 +1,2 @@
+class ProjectLocale < ApplicationRecord
+end
