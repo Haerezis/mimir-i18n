@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   scope :api, defaults: { format: :json }, except: [:new, :edit] do
     scope :v1 do
-      resource :current_user, except: [:destroy] as: :current_user, controller: 'api/v1/current_user'
+      resource :current_user, except: [:destroy], as: :current_user, controller: 'api/v1/current_user'
       resources :users
       resources :projects do
         scope module: :project do
