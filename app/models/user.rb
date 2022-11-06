@@ -4,4 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :confirmable, :trackable
+
+  has_many :user_project_permissions
+  has_many :projects, through: :user_project_permissions
 end

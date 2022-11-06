@@ -61,3 +61,6 @@ end
 gem "devise", "~> 4.8"
 
 gem "vite_rails", "~> 3.0"
+
+#To avoid warning when running rails : https://github.com/ruby/net-imap/issues/16
+gem "net-http", "~> 0.3.0"
