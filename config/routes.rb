@@ -3,14 +3,11 @@ Rails.application.routes.draw do
 
   devise_for :users
 
-  scope :api, defaults: { format: :json }, except: [:new, :edit] do
-    scope :v1 do
-      resource :current_user, except: [:destroy], as: :current_user, controller: 'api/v1/current_user'
-      resources :users
+  namespace :api, defaults: { format: :json }, except: [:new, :edit] do
+    namespace :v1 do
+      resource :current_user, only: [:show, :update], as: :current_user, controller: 'current_user'
       resources :projects do
         scope module: :project do
-          resources :users
-          resources :translation_keys
           resources :translations
         end
       end

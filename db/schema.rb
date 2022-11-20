@@ -12,38 +12,37 @@
 
 ActiveRecord::Schema[7.0].define(version: 2022_11_01_145906) do
   create_table "project_locales", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.string "code", null: false
     t.integer "project_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_project_locales_on_project_id"
   end
 
   create_table "projects", force: :cascade do |t|
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "name", null: false
   end
 
   create_table "translations", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.integer "project_id"
-    t.integer "project_locale_id"
+    t.text "locale"
     t.string "key"
     t.text "value"
-    t.index ["project_id", "project_locale_id", "key"], name: "index_translations_on_project_id_and_project_locale_id_and_key", unique: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id", "locale", "key"], name: "index_translations_on_project_id_and_locale_and_key", unique: true
     t.index ["project_id"], name: "index_translations_on_project_id"
-    t.index ["project_locale_id"], name: "index_translations_on_project_locale_id"
   end
 
   create_table "user_project_permissions", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.integer "user_id"
     t.integer "project_id"
     t.boolean "read_write", default: false
     t.boolean "admin", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_user_project_permissions_on_project_id"
     t.index ["user_id"], name: "index_user_project_permissions_on_user_id"
   end
@@ -51,6 +50,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_01_145906) do
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
+    t.string "firstname", null: false
+    t.string "lastname", null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -71,7 +72,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_01_145906) do
   end
 
   add_foreign_key "project_locales", "projects"
-  add_foreign_key "translations", "project_locales"
   add_foreign_key "translations", "projects"
   add_foreign_key "user_project_permissions", "projects"
   add_foreign_key "user_project_permissions", "users"

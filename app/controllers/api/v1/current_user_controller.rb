@@ -2,6 +2,7 @@ class Api::V1::CurrentUserController < Api::V1::ApplicationController
   before_action :set_user!
 
   def show
+    render json: @user.as_json2
   end
 
   def update

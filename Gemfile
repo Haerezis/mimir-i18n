@@ -64,3 +64,10 @@ gem "vite_rails", "~> 3.0"
 
 #To avoid warning when running rails : https://github.com/ruby/net-imap/issues/16
 gem "net-http", "~> 0.3.0"
+
+# uri need to be forced to version 0.10.0, gemfile embed 0.11.0 and 0.10.0 otherwise
+gem "uri", "0.10.0"
+
+gem "i18n_data", "~> 0.17.1"
+
+gem "js-routes", "~> 2.2"
