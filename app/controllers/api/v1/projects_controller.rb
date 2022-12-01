@@ -8,7 +8,7 @@ class Api::V1::ProjectsController < Api::V1::ApplicationController
   def create
     owner = current_user
     name = params.require(:name)
-    locales = [params[:locale], params[:locales]].flatten.reject(&:blank?)
+    locales = ([params[:locale], params[:locales]].flatten.reject(&:blank?).map(&:downcase)) & I18nData.languages.keys.map(&:downcase)
 
     @project = Project.factory_create(
       current_user,
@@ -51,6 +51,6 @@ class Api::V1::ProjectsController < Api::V1::ApplicationController
 
   def set_project!
     @project = current_user.projects.find(params.require(:id))
-    @permission = current_user.user_project_permissions.find_by(project_id: @project.id)
+    @permission = current_user.permissions.find_by(project_id: @project.id)
   end
 end

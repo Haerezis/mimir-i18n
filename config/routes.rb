@@ -8,7 +8,12 @@ Rails.application.routes.draw do
       resource :current_user, only: [:show, :update], as: :current_user, controller: 'current_user'
       resources :projects do
         scope module: :project do
-          resources :translations
+          resources :translations, only: [:index, :create] do
+            collection do
+              patch :update
+              delete :destroy
+            end
+          end
         end
       end
     end

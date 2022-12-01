@@ -21,17 +21,17 @@ class Api::V1::Project::TranslationsController < Api::V1::ApplicationController
   protected
   def set_project
     @project = current_user.projects.find(params.require(:project_id))
-    @permission = current_user.user_project_permissions.find_by(project_id: @project.id)
+    @permission = current_user.permissions.find_by(project_id: @project.id)
   end
 
-  def set_locales_and_keys
+  def set_translations
     ##### LOCALES
     @locales = [params[:locale], params[:locales]].flatten.reject(&:blank?)
 
     if @locales.empty? || @locales.include?("*")
       @locales = I18nData.languages.keys.map(&:downcase)
     end
-    @locales = @project.locales.where(:code.in => @locales).distinct(:code)
+    @locales = @project.locales.where(code: @locales).map(&:code)
 
 
     ##### KEYS
@@ -39,9 +39,24 @@ class Api::V1::Project::TranslationsController < Api::V1::ApplicationController
 
 
     ##### TRANSLATIONS
-    @translations = @project.translations.where(
-      :locale.in => @locales,
-      :key.in => @keys,
-    )
+    @translations = @project.translations
+    if @locales.present?
+      @translations = @translations.where(locale: @locales)
+    end
+    if @keys.present?
+      @translations = @translations.where(key: @keys)
+    end
+  end
+
+  def create_or_update_translation(locale, key, value)
+    translation = @project.translations.where(
+      locale: locale,
+      key: key
+    ).first_or_initialize
+
+    translation.value = value
+    translation.save!
+
+    translation
   end
 end

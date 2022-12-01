@@ -5,8 +5,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :confirmable, :trackable
 
-  has_many :user_project_permissions
-  has_many :projects, through: :user_project_permissions
+  has_many :permissions, class_name: "UserProjectPermission"
+  has_many :projects, through: :permissions
 
   def as_json2
     Jbuilder.new do |json|

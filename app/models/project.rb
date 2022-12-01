@@ -1,15 +1,15 @@
 class Project < ApplicationRecord
-  has_many :user_project_permissions
-  has_many :users, through: :user_project_permissions
+  has_many :permissions, class_name: "UserProjectPermission", dependent: :destroy
+  has_many :users, through: :permissions
 
-  has_many :locales, class_name: "ProjectLocale", dependent: :destroy
+  has_many :locales, class_name: "Project::Locale", dependent: :destroy
   has_many :translations, dependent: :destroy
 
   def as_json2(user: nil, with_permissions: false)
     if with_permissions
-      permissions = user_project_permissions
+      permissions = self.permissions
     else
-      permissions = [user.user_project_permissions.detect {|p| p.project_id == self.id}]
+      permissions = [user.permissions.detect {|p| p.project_id == self.id}]
     end
 
     Jbuilder.new do |json|
@@ -18,7 +18,7 @@ class Project < ApplicationRecord
         :name
       )
 
-      json.locales(project_locales.map(&:as_json2))
+      json.locales(locales.map(&:as_json2))
 
       if permissions
         json.permissions(permissions.map(&:as_json2))
@@ -33,7 +33,7 @@ class Project < ApplicationRecord
       #owner: owner
     )
 
-    owner.user_project_permissions.create(
+    owner.permissions.create(
       project: project,
       admin: true,
     )

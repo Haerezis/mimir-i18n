@@ -1,10 +1,30 @@
-class Api::V1::ApplicationController < ActionController::Api
+class Api::V1::ApplicationController < ActionController::API
   before_action :authenticate_user!
+  #before_action :bypass_signin!
 
-  rescue_from Exception, with: :internal_server_error!
+  rescue_from Exception do |exception|
+    if Rails.env.test?
+      raise exception
+    end
+    internal_server_error!(exception)
+  end
   rescue_from ActionController::ParameterMissing, with: :parameter_missing!
+  rescue_from ActiveRecord::RecordNotFound, with: :not_found!
 
   protected
+  def authenticate_user!
+    catch(:warden) do
+      super
+      return
+    end
+    head :unauthorized
+  end 
+
+  def bypass_signin!
+    bypass_sign_in User.first, scope: :user
+  end
+
+
   def not_found!(msg)
     render status: :not_found,  json: {
       reason: msg
@@ -25,8 +45,9 @@ class Api::V1::ApplicationController < ActionController::Api
   end
 
   def internal_server_error!(e)
+    puts e
     render status: 500, json: {
-      reason: current_user&.ceris ? "Internal server error : #{e}" : "Internal server error" 
+      reason: "Internal server error" 
     }
   end
 

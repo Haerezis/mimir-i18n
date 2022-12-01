@@ -58,6 +58,11 @@ group :development do
   # gem "spring"
 end
 
+group :test do
+  gem "factory_bot_rails", "~> 6.2"
+  gem "mocha", "~> 2.0"
+end
+
 gem "devise", "~> 4.8"
 
 gem "vite_rails", "~> 3.0"

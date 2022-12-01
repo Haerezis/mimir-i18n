@@ -4,6 +4,7 @@ class Translation < ApplicationRecord
   def as_json2
     Jbuilder.new do |json|
       json.(self,
+        :id,
         :locale,
         :key,
         :value,

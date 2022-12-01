@@ -1,6 +1,6 @@
 class UserProjectPermission < ApplicationRecord
-  belongs_to :user, inverse_of: :user_project_permissions
-  belongs_to :project, inverse_of: :user_project_permissions
+  belongs_to :user, inverse_of: :permissions
+  belongs_to :project, inverse_of: :permissions
 
   before_save do
     if self.admin
