@@ -8,10 +8,11 @@ Rails.application.routes.draw do
       resource :current_user, only: [:show, :update], as: :current_user, controller: 'current_user'
       resources :projects do
         scope module: :project do
-          resources :translations, only: [:index, :create] do
+          resources :translations do
             collection do
-              patch :update
-              delete :destroy
+              patch :update, action: :update_many
+              delete :destroy, action: :destroy_many
+              patch :update_key
             end
           end
         end

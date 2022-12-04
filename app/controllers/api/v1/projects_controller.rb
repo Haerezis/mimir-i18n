@@ -2,7 +2,7 @@ class Api::V1::ProjectsController < Api::V1::ApplicationController
   before_action :set_project!, except: [:index, :create]
 
   def index
-    render json: current_user.projects.map {|p| p.as_json2(user: current_user)}
+    render json: current_user.projects.map {|p| p.as_json(user: current_user)}
   end
 
   def create
@@ -16,11 +16,11 @@ class Api::V1::ProjectsController < Api::V1::ApplicationController
       locales
     )
 
-    render json: @project.as_json2(user: current_user)
+    render json: @project.as_json(user: current_user)
   end
 
   def show
-    render json: @project.as_json2(user: current_user)
+    render json: @project.as_json(user: current_user)
   end
 
   def update
@@ -31,7 +31,7 @@ class Api::V1::ProjectsController < Api::V1::ApplicationController
       return
     end
 
-    render json: @project.as_json2(user: current_user)
+    render json: @project.as_json(user: current_user)
   end
 
   def destroy

@@ -8,7 +8,7 @@ class UserProjectPermission < ApplicationRecord
     end
   end
 
-  def as_json2
+  def as_json(opts = {})
     Jbuilder.new do |json|
       json.(self,
         :user_id,

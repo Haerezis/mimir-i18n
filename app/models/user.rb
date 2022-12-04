@@ -8,7 +8,7 @@ class User < ApplicationRecord
   has_many :permissions, class_name: "UserProjectPermission"
   has_many :projects, through: :permissions
 
-  def as_json2
+  def as_json(opts = {})
     Jbuilder.new do |json|
       json.(self,
         :id,

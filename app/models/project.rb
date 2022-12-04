@@ -5,7 +5,10 @@ class Project < ApplicationRecord
   has_many :locales, class_name: "Project::Locale", dependent: :destroy
   has_many :translations, dependent: :destroy
 
-  def as_json2(user: nil, with_permissions: false)
+  def as_json(opts = {})
+    user = opts[:user]
+    with_permissions = opts.dig(:with_permissions, false)
+
     if with_permissions
       permissions = self.permissions
     else
@@ -18,10 +21,10 @@ class Project < ApplicationRecord
         :name
       )
 
-      json.locales(locales.map(&:as_json2))
+      json.locales(locales.map(&:as_json))
 
       if permissions
-        json.permissions(permissions.map(&:as_json2))
+        json.permissions(permissions.map(&:as_json))
       end
     end.attributes!
   end
