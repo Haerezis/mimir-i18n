@@ -15,4 +15,4 @@ myApp.use(myRouter)
 
 document.addEventListener('DOMContentLoaded', () => {
   myApp.mount('#app')
-})
+}, { once: true })
