@@ -1,17 +1,13 @@
 import * as Vue from 'vue'
-import * as VueRouter from 'vue-router'
 
 import App from '../App.vue'
+import vuetify from '../plugins/vuetify'
+import vuerouter from '../plugins/vue-router'
 
 const myApp = Vue.createApp(App)
 
-const myRouter = VueRouter.createRouter({
-  history: VueRouter.createWebHistory(),
-  routes: [],
-})
-
-
-myApp.use(myRouter)
+myApp.use(vuerouter)
+myApp.use(vuetify)
 
 document.addEventListener('DOMContentLoaded', () => {
   myApp.mount('#app')

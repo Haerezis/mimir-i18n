@@ -1,7 +1,7 @@
 <template>
-  <div>
-    Hello World
-  </div>
+  <v-app id="mimir-app">
+    <router-view></router-view>
+  </v-app>
 </template>
 
 <script>
