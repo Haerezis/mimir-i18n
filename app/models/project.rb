@@ -3,7 +3,7 @@ class Project < ApplicationRecord
   has_many :users, through: :permissions
 
   has_many :locales, class_name: "Project::Locale", dependent: :destroy
-  has_many :translations, dependent: :destroy
+  has_many :translations, class_name: "TranslationKey", dependent: :destroy
 
   def as_json(opts = {})
     user = opts[:user]

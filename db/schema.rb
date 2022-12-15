@@ -25,15 +25,23 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_01_145906) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "translations", force: :cascade do |t|
+  create_table "translation_keys", force: :cascade do |t|
     t.integer "project_id"
-    t.text "locale"
     t.string "key"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id", "key"], name: "index_translation_keys_on_project_id_and_key", unique: true
+    t.index ["project_id"], name: "index_translation_keys_on_project_id"
+  end
+
+  create_table "translation_values", force: :cascade do |t|
+    t.integer "translation_key_id"
+    t.text "locale"
     t.text "value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["project_id", "locale", "key"], name: "index_translations_on_project_id_and_locale_and_key", unique: true
-    t.index ["project_id"], name: "index_translations_on_project_id"
+    t.index ["translation_key_id", "locale"], name: "index_translation_values_on_translation_key_id_and_locale", unique: true
+    t.index ["translation_key_id"], name: "index_translation_values_on_translation_key_id"
   end
 
   create_table "user_project_permissions", force: :cascade do |t|
@@ -72,7 +80,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_01_145906) do
   end
 
   add_foreign_key "project_locales", "projects"
-  add_foreign_key "translations", "projects"
+  add_foreign_key "translation_keys", "projects"
+  add_foreign_key "translation_values", "translation_keys"
   add_foreign_key "user_project_permissions", "projects"
   add_foreign_key "user_project_permissions", "users"
 end

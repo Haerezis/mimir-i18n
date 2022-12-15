@@ -1,7 +1,7 @@
 class Api::V1::Project::TranslationsController < Api::V1::ApplicationController
   before_action :set_project
   before_action :set_translation, only: [:update, :destroy]
-  before_action :set_translations, only: [:index, :update_many, :destroy_many]
+  before_action :set_translations, only: [:index, :destroy_many]
 
   def index
     render json: @translations
@@ -12,15 +12,18 @@ class Api::V1::Project::TranslationsController < Api::V1::ApplicationController
     default_value = params[:value].presence
     values = params[:values].presence || []
 
-    @translations = @project.locales.map do |locale|
-      @project.translations.find_or_create(
+    translation_key = @project.translations.find_or_create(key: key)
+    @project.locales.each do |locale|
+      translation_value = translation_key.find_or_initialize(
         locale: locale.code,
-        key: key,
+      )
+      translation_value.assign_attributes(
         value: values[locale.code] || default_value || ""
       )
+      translation_value.save!
     end
 
-    render json: @translations
+    render json: translation_key
   end
 
 
@@ -38,26 +41,30 @@ class Api::V1::Project::TranslationsController < Api::V1::ApplicationController
 
   def update_many
     items = JSON.parse(raw_post)
-    if !items.is_a?(Array)
+    if !items.is_a?(Hash)
       raise JSON::ParserError.new
     end
 
     retvals = []
-    items.each_with_index do |item, i|
+    items.each_with_index do |id, update_data|
+
       translation = nil
-      id = item["id"]
 
       begin
-        translation = @project.find(id)
+        translation = @project.translations.find(id)
 
-        key = item["key"].presence || translation.key
-        value = items["value"] || ""
+        key = update_data["key"].presence
+        if key
+          translation.key = key
+          translation.save!
+        end
 
-        translation.assign_attributes(
-          key: key,
-          value: value,
-        )
-        translation.save!
+        values = update_data["values"] || {}
+        values.each do |locale, value|
+          translation_value = translation.find_by(locale: locale)
+          translation_value.value = value
+          translation_value.save!
+        end
 
         retvals.push(translation)
       rescue => e
@@ -91,15 +98,11 @@ class Api::V1::Project::TranslationsController < Api::V1::ApplicationController
     raise ActionController::ParameterMissing.new(:old) if old_key.nil?
     raise ActionController::ParameterMissing.new(:new) if new_key.nil?
 
-    translations = @project.translations.where(key: old_key).to_a
-    @project.transaction do
-      translations.each do |translation|
-        translation.key = new_key
-        translation.save!
-      end
-    end
+    translation = @project.translations.find_by(key: old_key)
+    translation.key = new_key
+    translation.save!
 
-    render json: translations
+    render json: translation
   end
 
   protected
@@ -113,6 +116,10 @@ class Api::V1::Project::TranslationsController < Api::V1::ApplicationController
   end
 
   def set_translations
+    ##### KEYS
+    @keys = [params[:key], params[:keys]].flatten.reject(&:blank?)
+
+
     ##### LOCALES
     @locales = [params[:locale], params[:locales]].flatten.reject(&:blank?)
 
@@ -122,29 +129,10 @@ class Api::V1::Project::TranslationsController < Api::V1::ApplicationController
     @locales = @project.locales.where(code: @locales).map(&:code)
 
 
-    ##### KEYS
-    @keys = [params[:key], params[:keys]].flatten.reject(&:blank?)
-
-
     ##### TRANSLATIONS
     @translations = @project.translations
-    if @locales.present?
-      @translations = @translations.where(locale: @locales)
-    end
     if @keys.present?
       @translations = @translations.where(key: @keys)
     end
-  end
-
-  def create_or_update_translation(locale, key, value)
-    translation = @project.translations.where(
-      locale: locale,
-      key: key
-    ).first_or_initialize
-
-    translation.value = value
-    translation.save!
-
-    translation
   end
 end

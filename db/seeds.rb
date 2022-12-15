@@ -17,7 +17,10 @@ admin.save!
 
 project = Project.factory_create(admin, "Test", ["en", "fr"])
 
-project.translations.create(locale: "en", key: "foo.bar", value: "Hello World")
-project.translations.create(locale: "fr", key: "foo.bar", value: "Bonjour monde")
-project.translations.create(locale: "en", key: "foo.baz", value: "Hello Universe")
-project.translations.create(locale: "fr", key: "foo.baz", value: "Bonjour univers")
+key1 = project.translations.create(key: "foo.bar")
+key2 = project.translations.create(key: "foo.baz")
+
+key1.values.create(locale: "en", value: "Hello World")
+key1.values.create(locale: "fr", value: "Bonjour monde")
+key2.values.create(locale: "en", value: "Hello Universe")
+key2.values.create(locale: "fr", value: "Bonjour univers")

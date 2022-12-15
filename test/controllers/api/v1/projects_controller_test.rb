@@ -51,7 +51,7 @@ class Api::V1::ProjectsControllerTest < ActionDispatch::IntegrationTest
 
   test "destroy" do
     assert_difference(->{Project.count}, -1) do
-      assert_difference(->{Translation.count}, -@project.translations.count) do
+      assert_difference(->{TranslationKey.count}, -@project.translations.count) do
         assert_difference(->{UserProjectPermission.count}, -@project.permissions.count) do
           delete api_v1_project_path(@project)
           assert_response :success
@@ -60,7 +60,7 @@ class Api::V1::ProjectsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_no_difference(->{Project.count}) do
-      assert_no_difference(->{Translation.count}) do
+      assert_no_difference(->{TranslationKey.count}) do
         assert_no_difference(->{UserProjectPermission.count}) do
           delete api_v1_project_path(@another_project)
           assert_response :not_found
