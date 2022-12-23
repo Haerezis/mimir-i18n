@@ -1,20 +1,24 @@
-import Root from '../components/views/Root.vue'
-import Project from '../components/views/Project.vue'
-import ProjectTranslations from '../components/views/Project/Translations.vue'
-import ProjectSettings from '../components/views/Project/Settings.vue'
-import ProjectMembers from '../components/views/Project/Members.vue'
-import ProjectReleases from '../components/views/Project/Releases.vue'
-import ProjectImport from '../components/views/Project/Import.vue'
+import Guards from '@/router/Guards.ts'
+
+import Root from '@/components/views/Root.vue'
+import Project from '@/components/views/Project.vue'
+import ProjectTranslations from '@/components/views/Project/Translations.vue'
+import ProjectSettings from '@/components/views/Project/Settings.vue'
+import ProjectMembers from '@/components/views/Project/Members.vue'
+import ProjectReleases from '@/components/views/Project/Releases.vue'
+import ProjectImport from '@/components/views/Project/Import.vue'
 
 const routes = [
   {
     name: 'root',
-    path: '',
-    component: Root
+    path: '/',
+    alias: '',
+    component: Root,
+    beforeEnter: Guards.fetchInitialData
   },
   {
     name: 'project',
-    path: 'project/:id',
+    path: '/project/:id',
     component: Project,
     props: true,
     children: [

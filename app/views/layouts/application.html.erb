@@ -37,6 +37,7 @@
 
     <%= yield %>
 
+    <% if false %>
     <div class="devise">
       <% if user_signed_in? %>
         Logged in as <strong><%= current_user.email %></strong>.
@@ -47,5 +48,6 @@
         <%= link_to "Login", new_user_session_path %>
       <% end %>
     </div>
+    <% end %>
   </body>
 </html>

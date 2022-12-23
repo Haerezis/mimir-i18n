@@ -3,7 +3,7 @@
   <router-view></router-view>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: "Project"
 };
@@ -12,7 +12,7 @@ export default {
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue'
 
-import ProjectSidebar from 'Project/Sidebar.vue'
+import ProjectSidebar from './Project/Sidebar.vue'
 
 const props = defineProps({
   id: String
