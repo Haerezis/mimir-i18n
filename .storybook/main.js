@@ -3,8 +3,21 @@ const path = require("path")
 
 module.exports = {
   "stories": [
-    "../app/frontend/components/**/*.stories.mdx",
-    "../app/frontend/components/**/*.stories.@(js|jsx|ts|tsx)"
+    {
+      titlePrefix: 'Atoms',
+      directory: "../app/frontend/components/atoms/**",
+      files: "*.stories.@(mdx|js|jsx|ts|tsx)"
+    },
+    {
+      titlePrefix: 'Molecules',
+      directory: "../app/frontend/components/molecules/**",
+      files: "*.stories.@(mdx|js|jsx|ts|tsx)"
+    },
+    {
+      titlePrefix: 'Organisms',
+      directory: "../app/frontend/components/organisms/**",
+      files: "*.stories.@(mdx|js|jsx|ts|tsx)"
+    },
   ],
   "addons": [
     "@storybook/addon-links",
