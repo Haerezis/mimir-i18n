@@ -3,6 +3,8 @@ Rails.application.routes.draw do
 
   devise_for :users
 
+  get '*other', to: "root#index"
+
   namespace :api, defaults: { format: :json }, except: [:new, :edit] do
     namespace :v1 do
       resource :current_user, only: [:show, :update], as: :current_user, controller: 'current_user'
