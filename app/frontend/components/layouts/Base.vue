@@ -1,4 +1,5 @@
 <template>
+<div>
   <v-navigation-drawer
     :rail="rail"
     app
@@ -23,7 +24,6 @@
   </v-navigation-drawer>
 
 
-
   <v-app-bar elevation=1>
 
     <slot name="topbar"></slot>
@@ -38,6 +38,7 @@
     <slot name="main"></slot>
 
   </v-main>
+</div>
 </template>
 
 <script setup lang="ts">

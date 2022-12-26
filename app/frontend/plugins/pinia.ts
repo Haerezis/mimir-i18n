@@ -1,5 +1,6 @@
-import { createPinia } from "pinia";
+import { createPinia, PiniaVuePlugin } from 'pinia'
 
 const pinia = createPinia();
 
-export default pinia;
+export const Plugin = PiniaVuePlugin;
+export const PluginInstance = pinia;

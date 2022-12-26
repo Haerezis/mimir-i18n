@@ -1,11 +1,16 @@
-import * as Vue from 'vue'
+import Vue from 'vue'
 
-import App from '@/App.vue'
 import registerPlugins from '@/plugins'
 
-const myApp = Vue.createApp(App)
-registerPlugins(myApp)
+import App from '@/App.vue'
+
+Vue.config.productionTip = false
+
+const vueOptions = registerPlugins(Vue)
 
 document.addEventListener('DOMContentLoaded', () => {
-  myApp.mount('#app')
+  new Vue({
+    render: h => h(App),
+    ...vueOptions
+  }).$mount('#app')
 }, { once: true })

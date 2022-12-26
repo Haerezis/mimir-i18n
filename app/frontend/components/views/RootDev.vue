@@ -13,5 +13,5 @@ import { useCurrentUserStore } from '@/stores/CurrentUser.ts'
 
 import LocalesSelect from '@/components/molecules/LocalesSelect.vue'
 
-const values = ref([])
+const values = ref(['en'])
 </script>

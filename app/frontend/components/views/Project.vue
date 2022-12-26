@@ -1,6 +1,8 @@
 <template>
+<div>
   <project-sidebar></project-sidebar>
   <router-view></router-view>
+</div>
 </template>
 
 <script lang="ts">

@@ -24,7 +24,7 @@ module.exports = {
     "@storybook/addon-essentials",
     "@storybook/addon-interactions"
   ],
-  "framework": "@storybook/vue3",
+  "framework": "@storybook/vue",
   "core": {
     "builder": "@storybook/builder-vite"
   },

@@ -5,14 +5,13 @@ export default {
   component: LocalesSelect,
 };
 
-const Template = () => ({
+const Template = (args, { argTypes }) => ({
   components: { LocalesSelect },
-  setup() {
-    return {
-      values: ['en'],
-    };
-  },
-  template: '<LocalesSelect v-model="values"/>',
+  props: Object.keys(argTypes),
+  template: '<LocalesSelect v-model="$props.values"/>',
 });
 
-export const DefaultLocalesSelect = Template.bind();
+export const DefaultLocalesSelect = Template.bind({});
+DefaultLocalesSelect.args = {
+  values: ['en']
+}
