@@ -26,7 +26,7 @@ class Api::V1::ProjectsControllerTest < ActionDispatch::IntegrationTest
     assert_equal @project.id, json['id']
 
     get api_v1_project_path(@another_project)
-    assert_response :not_found
+    assert_response :bad_request
   end
 
   test "create" do
@@ -45,7 +45,7 @@ class Api::V1::ProjectsControllerTest < ActionDispatch::IntegrationTest
 
     assert_no_changes(->{@another_project.reload.name}) do
       patch api_v1_project_path(@another_project), params: { name: "foobar" }
-      assert_response :not_found
+      assert_response :bad_request
     end
   end
 
@@ -63,7 +63,7 @@ class Api::V1::ProjectsControllerTest < ActionDispatch::IntegrationTest
       assert_no_difference(->{TranslationKey.count}) do
         assert_no_difference(->{UserProjectPermission.count}) do
           delete api_v1_project_path(@another_project)
-          assert_response :not_found
+          assert_response :bad_request
         end
       end
     end

@@ -2,7 +2,11 @@ class Api::V1::ProjectsController < Api::V1::ApplicationController
   before_action :set_project!, except: [:index, :create]
 
   def index
-    render json: current_user.projects.map {|p| p.as_json(user: current_user)}
+    projects = []
+    projects += current_user.admin_projects.map {|p| p.as_json(user: current_user)}
+    projects += current_user.projects.map {|p| p.as_json(user: current_user)}
+
+    render json: projects
   end
 
   def create
@@ -35,7 +39,7 @@ class Api::V1::ProjectsController < Api::V1::ApplicationController
   end
 
   def destroy
-    if !@permission.admin
+    if @project.owner != current_user
       forbidden!
       return
     end
@@ -50,7 +54,10 @@ class Api::V1::ProjectsController < Api::V1::ApplicationController
   end
 
   def set_project!
-    @project = current_user.projects.find(params.require(:id))
-    @permission = current_user.permissions.find_by(project_id: @project.id)
+    @project = Project.find(params.require(:id))
+    if @project.owner != current_user
+      bad_request!("Current user don't have permission for this project")
+      return
+    end
   end
 end

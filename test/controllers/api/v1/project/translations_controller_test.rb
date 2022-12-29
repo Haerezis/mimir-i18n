@@ -3,7 +3,7 @@ require "test_helper"
 class Api::V1::Project::TranslationsControllerTest < ActionDispatch::IntegrationTest
   setup do 
     @project = create(:project)
-    @user = @project.users.first
+    @user = @project.owner
     sign_in(@user)
   end
 

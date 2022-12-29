@@ -107,8 +107,11 @@ class Api::V1::Project::TranslationsController < Api::V1::ApplicationController
 
   protected
   def set_project
-    @project = current_user.projects.find(params.require(:project_id))
-    @permission = current_user.permissions.find_by(project_id: @project.id)
+    @project = Project.find(params.require(:project_id))
+    if @project.owner != current_user
+      bad_request!("Current user don't have permission for this project")
+      return
+    end
   end
 
   def set_translation

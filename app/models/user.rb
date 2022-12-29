@@ -7,6 +7,11 @@ class User < ApplicationRecord
 
   has_many :permissions, class_name: "UserProjectPermission"
   has_many :projects, through: :permissions
+  has_many :admin_projects, class_name: "Project", inverse_of: :owner, foreign_key: :owner_id
+
+  def fullname
+    [firstname, lastname].compact.join(" ")
+  end
 
   def as_json(opts = {})
     Jbuilder.new do |json|
@@ -14,7 +19,8 @@ class User < ApplicationRecord
         :id,
         :email,
         :firstname,
-        :lastname
+        :lastname,
+        :fullname,
       )
     end.attributes!
   end

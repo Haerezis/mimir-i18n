@@ -21,8 +21,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_01_145906) do
 
   create_table "projects", force: :cascade do |t|
     t.string "name", null: false
+    t.integer "owner_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["owner_id"], name: "index_projects_on_owner_id"
   end
 
   create_table "translation_keys", force: :cascade do |t|
@@ -47,8 +49,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_01_145906) do
   create_table "user_project_permissions", force: :cascade do |t|
     t.integer "user_id"
     t.integer "project_id"
-    t.boolean "read_write", default: false
-    t.boolean "admin", default: false
+    t.boolean "readonly", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_user_project_permissions_on_project_id"
@@ -80,6 +81,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_01_145906) do
   end
 
   add_foreign_key "project_locales", "projects"
+  add_foreign_key "projects", "users", column: "owner_id"
   add_foreign_key "translation_keys", "projects"
   add_foreign_key "translation_values", "translation_keys"
   add_foreign_key "user_project_permissions", "projects"

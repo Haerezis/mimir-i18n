@@ -2,14 +2,13 @@ FactoryBot.define do
   factory :project do
     name { "Test" }
 
+    owner { FactoryBot.create(:user) }
+
     transient do
-      owner { FactoryBot.create(:user) }
       locales { ['en', 'fr'] }
     end
 
     after(:create) do |project, evaluator|
-      project.permissions.create(user: evaluator.owner, admin: true)
-
       evaluator.locales.each do |locale|
         project.locales.create(code: locale)
       end

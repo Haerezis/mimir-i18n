@@ -4,8 +4,7 @@ class CreateUserProjectPermissions < ActiveRecord::Migration[7.0]
       t.references :user, foreign_key: true
       t.references :project, foreign_key: true
 
-      t.boolean :read_write, default: false
-      t.boolean :admin, default: false
+      t.boolean :readonly, default: true
 
       t.timestamps
     end

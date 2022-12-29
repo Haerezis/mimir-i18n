@@ -1,30 +1,39 @@
 <template>
 <div>
   <v-navigation-drawer
-    :rail="rail"
+    :mini-variant="!drawer_is_open"
     app
   >
     <template v-slot:prepend>
-      <v-list>
-          <router-link class="home-link" to="/">
-            <v-list-item prepend-icon="mdi-home" title="Mimir" ></v-list-item>
-          </router-link>
-      </v-list>
+
+      <router-link class="home-link" tag="span" to="/">
+        <v-list-item class="pa-1">
+          <v-list-item-avatar>
+            <mimir-icon/>
+          </v-list-item-avatar>
+          <v-list-item-title>Mimir</v-list-item-title>
+        </v-list-item>
+      </router-link>
+
       <v-divider></v-divider>
     </template>
 
-    <slot name="sidebar"></slot>
+    <slot name="sidebar" :open="drawer_is_open"></slot>
 
     <template v-slot:append>
       <v-divider></v-divider>
-      <v-list>
-        <v-list-item @click="rail = !rail" :prepend-icon="drawer_btn_icon" title="Collapse sidebar" ></v-list-item>
-      </v-list>
+
+      <v-list-item link @click="drawer_is_open = !drawer_is_open">
+        <v-list-item-title v-if="drawer_is_open">Collapse sidebar</v-list-item-title>
+        <v-icon>{{ drawer_btn_icon }}</v-icon>
+      </v-list-item>
     </template>
   </v-navigation-drawer>
 
 
-  <v-app-bar elevation=1>
+
+
+  <v-app-bar app elevation=1>
 
     <slot name="topbar"></slot>
 
@@ -44,13 +53,16 @@
 <script setup lang="ts">
 import { ref, reactive, computed, PropType } from 'vue'
 
-const rail = ref(false)
+import MimirIcon from '@/assets/icon.svg'
 
-const drawer_btn_icon = computed(() => `mdi-${rail ? 'chevron-double-left' : 'chevron-double-right'}`)
+const drawer_is_open = ref(true)
+
+const drawer_btn_icon = computed(() => `mdi-${drawer_is_open.value ? 'chevron-double-left' : 'chevron-double-right'}`)
 </script>
 
 <style scoped>
 .home-link {
   text-decoration: none;
+  cursor: pointer;
 }
 </style>

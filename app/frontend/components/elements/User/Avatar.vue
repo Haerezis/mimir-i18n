@@ -38,7 +38,7 @@ const props = defineProps({
 
 const user_fullname = computed(() => `${props.user.firstname} ${props.user.lastname}`)
 
-const color = computed(() => user_fullname ? stc(user_fullname.value) : stc(null))
+const color = computed(() => stc(user_fullname.value ? user_fullname.value : null))
 
 const initials = computed(() => `${props.user.firstname.toUpperCase()[0]}${props.user.lastname.toUpperCase()[0]}`)
 const picture_url = computed(() => props.user.picture?.small_url)

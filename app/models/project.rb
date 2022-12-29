@@ -1,4 +1,5 @@
 class Project < ApplicationRecord
+  belongs_to :owner, class_name: "User"
   has_many :permissions, class_name: "UserProjectPermission", dependent: :destroy
   has_many :users, through: :permissions
 
@@ -12,14 +13,17 @@ class Project < ApplicationRecord
     if with_permissions
       permissions = self.permissions
     else
-      permissions = [user.permissions.detect {|p| p.project_id == self.id}]
+      permissions = [user&.permissions&.detect {|p| p.project_id == self.id}].compact
     end
 
     Jbuilder.new do |json|
       json.(self,
         :id,
-        :name
+        :name,
+        :owner_id
       )
+
+      json.owner_fullname(owner.fullname)
 
       json.locales(locales.map(&:as_json))
 
@@ -33,12 +37,7 @@ class Project < ApplicationRecord
   def self.factory_create(owner, name, locales = [])
     project = Project.create(
       name: name,
-      #owner: owner
-    )
-
-    owner.permissions.create(
-      project: project,
-      admin: true,
+      owner: owner
     )
 
     locales.each do |locale|

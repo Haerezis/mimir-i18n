@@ -15,7 +15,7 @@ export const useTranslationsStore = defineStore('translations', {
   },
   actions: {
     loadAll(project_id: number) {
-      return axios.get(window.Routes.api_v1_project_translations_path(project_id))
+      return axios.get(Routes.api_v1_project_translations_path(project_id))
         .then((response) => {
           response.data.forEach((translation) => this.translations[translation.id] = translation)
         })

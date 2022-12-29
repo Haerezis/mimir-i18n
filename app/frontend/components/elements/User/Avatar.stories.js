@@ -1,4 +1,4 @@
-import UserAvatar from './UserAvatar.vue';
+import UserAvatar from './Avatar.vue';
 
 export default {
   title: 'UserAvatar',

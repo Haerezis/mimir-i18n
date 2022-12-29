@@ -1,12 +1,17 @@
 import { useCurrentUserStore } from '@/stores/CurrentUser.ts'
+import { useProjectsStore } from '@/stores/Projects.ts'
 
 function defaultErrorHandler(from, to, next) {
 }
 
 function fetchInitialData(from, to, next) {
   const currentUserStore = useCurrentUserStore()
+  const projectsStore = useProjectsStore()
 
-  return currentUserStore.load()
+  return Promise.all([
+    currentUserStore.load(),
+    projectsStore.loadAll(),
+  ])
     .then(() => {
       next()
     })
