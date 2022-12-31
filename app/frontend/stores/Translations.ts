@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import axios from "@/plugins/axios"
 import Routes from '@/plugins/routes'
 
-import Translation from '@/types/TranslationKey.ts'
+import Translation from '@/types/Translation'
 
 export const useTranslationsStore = defineStore('translations', {
   state: () => ({
@@ -17,7 +17,10 @@ export const useTranslationsStore = defineStore('translations', {
     load_all(project_id: number) {
       return axios.get(Routes.api_v1_project_translations_path(project_id))
         .then((response) => {
-          response.data.forEach((translation) => this.translations[translation.id] = translation)
+          response.data.forEach((translation_data) => {
+            const translation = new Translation().initFromApi(translation_data)
+            this.translations[translation.id] = translation
+          })
         })
     },
     //create
