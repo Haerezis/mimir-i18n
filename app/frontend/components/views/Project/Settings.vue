@@ -1,11 +1,5 @@
 <template>
   <div>
-    Hello World
+    Hello World Settings
   </div>
 </template>
-
-<script>
-export default {
-  name: "ProjectSettings"
-};
-</script>

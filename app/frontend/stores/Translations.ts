@@ -10,11 +10,11 @@ export const useTranslationsStore = defineStore('translations', {
     translations: {} as { [key: number]: Translation },
   }),
   getters: {
-    byProjectId: (state) => { (id) => { Object.values(state.translations).filter((t) => t.project_id == id) } },
+    by_project_id: (state) => ((id) => Object.values(state.translations).filter((t) => t.project_id == id)),
     //get pending actions
   },
   actions: {
-    loadAll(project_id: number) {
+    load_all(project_id: number) {
       return axios.get(Routes.api_v1_project_translations_path(project_id))
         .then((response) => {
           response.data.forEach((translation) => this.translations[translation.id] = translation)

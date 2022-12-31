@@ -1,11 +1,5 @@
 <template>
   <div>
-    Hello World
+    Hello World Import
   </div>
 </template>
-
-<script>
-export default {
-  name: "ProjectImport"
-};
-</script>

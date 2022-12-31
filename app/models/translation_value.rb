@@ -1,5 +1,5 @@
 class TranslationValue < ApplicationRecord
-  belongs_to :key, class_name: "TranslationKey"
+  belongs_to :translation_key, class_name: "TranslationKey"
 
   def as_json(opts = {})
     Jbuilder.new do |json|

@@ -1,4 +1,4 @@
-export default interface ProjectTranslationValue {
+export default interface TranslationValue {
   id?: number;
   locale: string;
   value: string;

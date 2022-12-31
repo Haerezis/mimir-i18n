@@ -20,10 +20,9 @@ class Project < ApplicationRecord
       json.(self,
         :id,
         :name,
-        :owner_id
       )
 
-      json.owner_fullname(owner.fullname)
+      json.owner(owner.as_json(opts))
 
       json.locales(locales.map(&:as_json))
 

@@ -3,10 +3,14 @@ export interface ProjectNew {
   locales: string[];
 }
 
+export interface ProjectOwner {
+  id: number;
+  fullname: string;
+}
+
 export default interface Project {
   id: number;
-  owner_id: number;
-  owner_fullname: string;
+  owner: ProjectOwner;
   name: string;
   locales: string[];
 }

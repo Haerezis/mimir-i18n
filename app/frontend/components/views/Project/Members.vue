@@ -1,11 +1,5 @@
 <template>
   <div>
-    Hello World
+    Hello World Members
   </div>
 </template>
-
-<script>
-export default {
-  name: "ProjectMembers"
-};
-</script>

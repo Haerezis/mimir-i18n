@@ -1,30 +1,44 @@
 import { useCurrentUserStore } from '@/stores/CurrentUser.ts'
 import { useProjectsStore } from '@/stores/Projects.ts'
+import { useTranslationsStore } from '@/stores/Translations.ts'
 
-function defaultErrorHandler(from, to, next) {
+
+function defaultErrorHandler(error) {
+  if(error.response.status == 401) {
+    window.location.replace('/login')
+  }
+  else {
+    window.location.replace('/error')
+  }
 }
 
-function fetchInitialData(from, to, next) {
-  const currentUserStore = useCurrentUserStore()
-  const projectsStore = useProjectsStore()
+function fetchInitialData(to, from, next) {
+  const current_user_store = useCurrentUserStore()
+  const projects_store = useProjectsStore()
 
   return Promise.all([
-    currentUserStore.load(),
-    projectsStore.loadAll(),
+    current_user_store.load(),
+    projects_store.load_all(),
   ])
     .then(() => {
       next()
     })
-    .catch((error) => {
-      if(error.response.status == 401) {
-        window.location.replace('/login')
-      }
-      else {
-        window.location.replace('/error')
-      }
+    .catch(defaultErrorHandler)
+}
+
+function fetchTranslations(to, from, next) {
+  const translations_store = useTranslationsStore()
+
+  return Promise.all([
+    translations_store.load_all(to.params.id)
+  ])
+    .then(() => {
+      next()
     })
+    .catch(defaultErrorHandler)
 }
 
 export default {
   fetchInitialData,
+  fetchTranslations,
 }

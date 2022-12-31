@@ -1,5 +1,5 @@
 <template>
-  <LayoutBase>
+  <layout-base>
     <template v-slot:sidebar="slotProps">
       <v-list>
         <v-list-item class="pa-2">
@@ -29,35 +29,35 @@
 
     <template v-slot:topbar>
       <v-toolbar-title>Application</v-toolbar-title>
-      <v-spacer></v-spacer>
-      <UserAvatar :user="current_user" />
     </template>
 
     <template v-slot:main>
       <v-list>
-        <v-list-item v-for="(project, id) in projects" :key="id">
-          <project-card :value="project"/>
+        <v-list-item
+          v-for="(project, id) in projects"
+          :key="id"
+        >
+          <project-card
+            :value="project"
+            class="ma-4"
+          />
         </v-list-item>
       </v-list>
     </template>
-  </LayoutBase>
+  </layout-base>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 
-import { useCurrentUserStore } from '@/stores/CurrentUser.ts'
 import { useProjectsStore } from '@/stores/Projects.ts'
 
 import LayoutBase from '@/components/layouts/Base.vue'
-import UserAvatar from '@/components/elements/User/Avatar.vue'
 import ProjectCard from '@/components/elements/Project/Card.vue'
 import ProjectDialogNew from '@/components/elements/Project/DialogNew.vue'
 
-const current_user_store = useCurrentUserStore()
 const projects_store = useProjectsStore()
 
-const current_user = computed(() => current_user_store.user)
 const projects = computed(() => projects_store.all)
 
 const show_project_new_dialog = ref(false)

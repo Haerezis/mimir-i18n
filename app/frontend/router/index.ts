@@ -27,12 +27,14 @@ const routes = [
     path: '/project/:id',
     component: Project,
     props: true,
+    beforeEnter: Guards.fetchInitialData,
     children: [
       {
         name: 'project-translations',
         path: 'translations',
         alias: '',
-        component: ProjectTranslations
+        component: ProjectTranslations,
+        beforeEnter: Guards.fetchTranslations,
       },
       {
         name: 'project-settings',

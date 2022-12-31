@@ -6,9 +6,10 @@ class TranslationKey < ApplicationRecord
     Jbuilder.new do |json|
       json.(self,
         :id,
+        :project_id,
         :key,
-        :values,
       )
+      json.values( values.map {|v| [v.locale, v]}.to_h )
     end.attributes!
   end
 end

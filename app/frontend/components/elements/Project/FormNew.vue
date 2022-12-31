@@ -29,6 +29,7 @@ import { ref, reactive, computed, PropType } from 'vue'
 import ISO6391 from 'iso-639-1'
 
 import SelectLocales from '@/components/elements/Input/SelectLocales.vue'
+import { ProjectNew } from '@/types/Project.ts'
 
 const props = defineProps({
   value: {
@@ -45,7 +46,7 @@ const form = ref(null)
 
 const emit = defineEmits(['input', 'submit'])
 
-const data: ProjectFormData = reactive({
+const data: ProjectNew = reactive({
   name: "",
   locales: [],
 })

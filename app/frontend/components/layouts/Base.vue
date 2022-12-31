@@ -15,7 +15,7 @@
         </v-list-item>
       </router-link>
 
-      <v-divider></v-divider>
+      <v-divider/>
     </template>
 
     <slot name="sidebar" :open="drawer_is_open"></slot>
@@ -37,6 +37,9 @@
 
     <slot name="topbar"></slot>
 
+    <v-spacer></v-spacer>
+    <v-divider vertical inset class="mr-4"/>
+    <UserAvatar :user="current_user" />
   </v-app-bar>
 
 
@@ -53,11 +56,17 @@
 <script setup lang="ts">
 import { ref, reactive, computed, PropType } from 'vue'
 
+import UserAvatar from '@/components/elements/User/Avatar.vue'
 import MimirIcon from '@/assets/icon.svg'
+
+import { useCurrentUserStore } from '@/stores/CurrentUser.ts'
 
 const drawer_is_open = ref(true)
 
 const drawer_btn_icon = computed(() => `mdi-${drawer_is_open.value ? 'chevron-double-left' : 'chevron-double-right'}`)
+
+const current_user_store = useCurrentUserStore()
+const current_user = computed(() => current_user_store.user)
 </script>
 
 <style scoped>

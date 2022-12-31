@@ -14,7 +14,7 @@ export const useProjectsStore = defineStore('projects', {
     current: (state) => state.all[state.current_project_id],
   },
   actions: {
-    loadAll() {
+    load_all() {
       return axios.get(Routes.api_v1_projects_path())
         .then((response) =>
           response.data.forEach((project) => this.all[project.id] = project)
@@ -38,7 +38,7 @@ export const useProjectsStore = defineStore('projects', {
         })
     },
 
-    setCurrentProject(project: number | Project) {
+    set_current_project(project: number | Project) {
       const id = (project instanceof number) ? project : project.id
       this.current_project_id = id
     }
