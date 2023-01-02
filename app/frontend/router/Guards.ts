@@ -4,11 +4,12 @@ import { useTranslationsStore } from '@/stores/Translations.ts'
 
 
 function defaultErrorHandler(error) {
-  if(error.response.status == 401) {
+  console.log(error)
+  if(error.status == 401) {
     window.location.replace('/login')
   }
   else {
-    window.location.replace('/error')
+//    window.location.replace('/error')
   }
 }
 

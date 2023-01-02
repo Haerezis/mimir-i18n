@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import { defineStore } from 'pinia'
 
 import axios from "@/plugins/axios"
@@ -7,10 +8,10 @@ import Translation from '@/types/Translation'
 
 export const useTranslationsStore = defineStore('translations', {
   state: () => ({
-    translations: {} as { [key: number]: Translation },
+    all: {} as { [key: number]: Translation },
   }),
   getters: {
-    by_project_id: (state) => ((id) => Object.values(state.translations).filter((t) => t.project_id == id)),
+    by_project_id: (state) => ((id) => Object.values(state.all).filter((t) => t.project_id == id)),
     //get pending actions
   },
   actions: {
@@ -18,8 +19,8 @@ export const useTranslationsStore = defineStore('translations', {
       return axios.get(Routes.api_v1_project_translations_path(project_id))
         .then((response) => {
           response.data.forEach((translation_data) => {
-            const translation = new Translation().initFromApi(translation_data)
-            this.translations[translation.id] = translation
+            const translation = new Translation().init_from_api(translation_data)
+            Vue.set(this.all, translation.id, translation)
           })
         })
     },

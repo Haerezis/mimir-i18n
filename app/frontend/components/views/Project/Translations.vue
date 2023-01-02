@@ -34,5 +34,5 @@ const props = defineProps({
 
 const translations_store = useTranslationsStore()
 
-const translations = translations_store.by_project_id(props.project.id)
+const translations = computed(() => translations_store.by_project_id(props.project.id))
 </script>

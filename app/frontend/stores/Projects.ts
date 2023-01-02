@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import { defineStore } from 'pinia'
 
 import axios from "@/plugins/axios"
@@ -17,14 +18,14 @@ export const useProjectsStore = defineStore('projects', {
     load_all() {
       return axios.get(Routes.api_v1_projects_path())
         .then((response) =>
-          response.data.forEach((project) => this.all[project.id] = project)
+          response.data.forEach((project) =>  Vue.set(this.all, project.id, project))
         )
     },
     load(id: number) {
       return axios.get(Routes.api_v1_project_path(id))
         .then((response) => {
           const project = response.data
-          this.all[project.id] = project
+          Vue.set(this.all, project.id, project)
           return project
         })
     },
