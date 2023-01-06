@@ -4,13 +4,16 @@
       <v-icon>mdi-dots-vertical</v-icon>
     </v-btn>
 
-    <v-card-title class="flex-column align-start ma-0">
-      {{ value.key }}
+    <v-card-title class="ma-0 pr-10">
+      <input-textfield-diff
+        v-model="value.key"
+        :original="value.key_original"
+        label="Key"
+        :regex="/^([a-z][a-z0-9]*\.)*[a-z][a-z0-9]*\.?$/i"
+      />
     </v-card-title>
 
     <v-card-text>
-      <v-divider/>
-
       <v-container>
         <v-row v-for="locale in locales" :key="locale">
           <v-col cols="1" class="d-flex justify-end">
@@ -20,7 +23,11 @@
           </v-col>
 
           <v-col>
-            <card-translation-value-input v-model="value.values[locale]" class="pt-0 mt-0" />
+            <input-textarea-diff
+              v-model="value.values[locale].value"
+              :original="value.values[locale].value_original"
+              class="pt-0 mt-0"
+            />
           </v-col>
         </v-row>
       </v-container>
@@ -34,7 +41,8 @@ import ISO6391 from 'iso-639-1'
 
 import { Translation } from '@/types/Translation'
 
-import CardTranslationValueInput from '@/components/elements/Translation/Card_TranslationValueInput.vue'
+import InputTextareaDiff from '@/components/elements/Input/TextareaDiff.vue'
+import InputTextfieldDiff from '@/components/elements/Input/TextfieldDiff.vue'
 
 const props = defineProps({
   value: {
@@ -49,3 +57,9 @@ const props = defineProps({
 
 const translation_values = computed(() => props.locales.map((locale) => props.value.values[locale]))
 </script>
+
+<style scoped>
+.row + .row {
+  margin-top: 0;
+}
+</style>

@@ -5,7 +5,7 @@
       :key="translation.id"
       class="mt-6"
     >
-      <translation-card :value="translation" :locales="locales" />
+      <translation-card :value="translation" :locales="filters.locales" />
     </v-list-item>
   </v-list>
 </template>
@@ -26,9 +26,12 @@ const props = defineProps({
     type: Object as PropType<Project>,
     required: true
   },
-  locales: {
-    type: Array as PropType<string[]>,
-    required: true
+  filters: {
+    type: Object,
+    default: () => ({
+      text: "",
+      locales: project.value.locales,
+    })
   }
 })
 
