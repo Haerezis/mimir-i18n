@@ -8,10 +8,12 @@ import Translation from '@/types/Translation'
 
 export const useTranslationsStore = defineStore('translations', {
   state: () => ({
-    all: {} as { [key: number]: Translation },
+    persisted: {} as { [key: number]: Translation },
+    new: [] as Translation[],
   }),
   getters: {
-    by_project_id: (state) => ((id) => Object.values(state.all).filter((t) => t.project_id == id)),
+    all: (state) => state.new.concat(Object.values(state.persisted)),
+    by_project_id: (state) => ((id) => useTranslationsStore().all.filter((t) => t.project_id == id)),
     //get pending actions
   },
   actions: {

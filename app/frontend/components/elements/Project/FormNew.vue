@@ -29,12 +29,12 @@ import { ref, reactive, computed, PropType } from 'vue'
 import ISO6391 from 'iso-639-1'
 
 import SelectLocales from '@/components/elements/Input/SelectLocales.vue'
-import { ProjectNew } from '@/types/Project.ts'
+import { ProjectNew } from '@/types/Project'
 
 const props = defineProps({
   value: {
     type: Boolean,
-    default: false,
+    default: () => false,
   },
   locales: {
     type: Array as PropType<string[]>,

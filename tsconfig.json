@@ -4,5 +4,7 @@
     "paths": {
       "@/*": ["app/frontend/*"],
     }
-  }
+  },
+  "exclude": ["node_modules", "build"],
+  "include": ["**/*.vue", "**/*.ts", "**/*.tsx"]
 }

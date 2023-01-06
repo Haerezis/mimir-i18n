@@ -14,6 +14,26 @@
             {{ project.name }}
           </v-list-item-title>
         </v-list-item>
+
+        <v-list-item>
+          <v-btn
+            v-if="slotProps.open"
+            @click="show_translation_new_dialog = true"
+            rounded
+          >
+            <v-icon>mdi-plus</v-icon>
+            Create Project
+          </v-btn>
+          <v-btn
+            v-else
+            @click="show_translation_new_dialog = true"
+            fab
+            small
+            elevation=2
+          >
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
+        </v-list-item>
       </v-list>
 
       <v-list
@@ -63,6 +83,7 @@ import { useProjectsStore } from '@/stores/Projects.ts'
 
 import LayoutBase from '@/components/layouts/Base.vue'
 import InputTranslationsFilters from '@/components/elements/Input/TranslationsFilters.vue'
+import TranslationDialogNew from '@/components/elements/Translation/DialogNew.vue'
 
 const props = defineProps({
   id: {
@@ -87,4 +108,7 @@ const filters = reactive({
   text: "",
   locales: project.value.locales,
 })
+
+
+const show_translation_new_dialog = ref(false)
 </script>
