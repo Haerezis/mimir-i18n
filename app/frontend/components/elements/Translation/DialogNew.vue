@@ -14,6 +14,7 @@
         <translation-form-new
           ref="form"
           v-model="form_valid"
+          :project="project"
           @submit="new_translation"
         >
           <template v-slot:submit><span/></template>
@@ -23,14 +24,14 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn text :disabled="submitting" @click="cancel">Cancel</v-btn>
-        <v-btn text :disabled="!form_valid || submitting" @click="submit">Create</v-btn>
+        <v-btn text :disabled="!form_valid || submitting" @click="trigger_form_submit">Create</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, PropType } from 'vue'
+import { ref, watch, PropType } from 'vue'
 
 import Project from '@/types/Project'
 
@@ -59,17 +60,20 @@ const translations_store = useTranslationsStore()
 
 const submitting = ref(false)
 
+watch(() => props.value, () => form.value?.clear())
+
 const cancel = () => {
   form.value.clear()
   emit('input', false)
 }
 
-const submit = () => {
-  //TODO submitting=true
+const trigger_form_submit = () => {
   form.value.submit()
 }
 
 const new_translation = (data) => {
+  //TODO submitting=true
   translations_store.new.push(data)
+  emit('input', false)
 }
 </script>

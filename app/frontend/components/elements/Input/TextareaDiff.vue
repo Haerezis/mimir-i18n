@@ -36,7 +36,6 @@ const props = defineProps({
   },
   original: {
     type: String,
-    required: true
   },
 })
 
@@ -46,7 +45,7 @@ const value2 = computed({
   set: (new_value) => emit("input", new_value)
 })
 
-const dirty = computed(() => props.value != props.original)
+const dirty = computed(() => (props.original != null) && props.value != props.original)
 
 const background_color = computed(() => dirty.value ? 'yellow' : '')
 

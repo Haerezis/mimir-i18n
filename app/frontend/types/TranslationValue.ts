@@ -8,16 +8,10 @@ export class TranslationValue {
   id?: number;
   locale: string;
   value: string = "";
-  value_original: string;
 
-  public get value_original() {
-    return this._value_original
-  }
-
-  public init(locale: string, value?: string) {
+  public init(locale: string, value?: string = "") {
     this.locale = locale
     this.value = value
-    this.value_original = value
 
     return this
   }
@@ -26,17 +20,22 @@ export class TranslationValue {
     this.id = data.id
     this.locale = data.locale
     this.value = data.value
-    this.value_original = data.value
 
     return this
   }
 
-  public get is_new() {
-    return !this.id
+  public clone() {
+    const clone = new TranslationValue()
+
+    clone.id = this.id
+    clone.locale = this.locale
+    clone.value = this.value
+
+    return clone
   }
 
-  public get is_dirty() {
-    return this.value != this.value_original
+  public get is_new() {
+    return !this.id
   }
 }
 

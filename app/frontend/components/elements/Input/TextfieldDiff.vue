@@ -35,7 +35,6 @@ const props = defineProps({
   },
   original: {
     type: String,
-    required: true
   },
   label: {
     type: String,
@@ -54,7 +53,7 @@ const value2 = computed({
   }
 })
 
-const dirty = computed(() => props.value != props.original)
+const dirty = computed(() => (props.original != null) && props.value != props.original)
 
 const background_color = computed(() => dirty.value ? 'yellow' : '')
 

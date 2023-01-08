@@ -1,13 +1,26 @@
 <template>
-  <v-card width="100%" class="card-hover">
-    <v-btn icon @click.prevent="" class="card-menu-btn">
-      <v-icon>mdi-dots-vertical</v-icon>
+  <v-card width="100%" class="card-hover" :color="color">
+    <v-btn
+      v-if="status != 'deleted'"
+      icon
+      class="card-menu-btn"
+      @click.prevent="emit('delete', value)"
+    >
+      <v-icon>mdi-close</v-icon>
+    </v-btn>
+    <v-btn
+      v-else
+      icon
+      class="card-menu-btn"
+      @click.prevent="emit('undelete', value)"
+    >
+      <v-icon>mdi-check</v-icon>
     </v-btn>
 
     <v-card-title class="ma-0 pr-10">
       <input-textfield-diff
         v-model="value.key"
-        :original="value.key_original"
+        :original="original ? original.key : null"
         label="Key"
         :regex="/^([a-z][a-z0-9]*\.)*[a-z][a-z0-9]*\.?$/i"
       />
@@ -25,7 +38,7 @@
           <v-col>
             <input-textarea-diff
               v-model="value.values[locale].value"
-              :original="value.values[locale].value_original"
+              :original="original ? original.values[locale].value : null"
               class="pt-0 mt-0"
             />
           </v-col>
@@ -49,13 +62,28 @@ const props = defineProps({
     type: Translation,
     required: true
   },
+  original: {
+    type: Translation,
+  },
+  status: {
+    type: String,
+  },
   locales: {
     type: Array as PropType<string[]>,
     required: true
   }
 })
 
+const emit = defineEmits(['delete'])
+
 const translation_values = computed(() => props.locales.map((locale) => props.value.values[locale]))
+
+const colors = {
+  new: "green",
+  dirty: "yellow",
+  deleted: "red"
+}
+const color = computed(() => colors[props.status])
 </script>
 
 <style scoped>

@@ -2,23 +2,29 @@
   <v-form
     :value="value"
     @input="emit('input', $event)"
-    @submit.stop="emit('submit', data)"
+    @submit.prevent="submit"
     ref="form"
   >
     <v-text-field
       label="Key"
       v-model="data.key"
       :rules="keyRules"
+      @keydown.enter="submit"
     ></v-text-field>
 
     <v-divider/>
 
     <v-list>
       <v-list-item v-for="locale in project.locales" :key="locale">
-        <v-text-field
-          :label="locale.toUpperCase()"
+
+        <v-textarea
           v-model="data.values[locale].value"
-          :rules="keyRules"
+          :label="locale.toUpperCase()"
+          @keydown.ctrl.enter="submit"
+          rows="1"
+          auto-grow
+          hide-details="auto"
+          counter
         />
       </v-list-item>
     </v-list>
@@ -30,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, PropType } from 'vue'
+import { ref, reactive, PropType } from 'vue'
 
 import ISO6391 from 'iso-639-1'
 
@@ -49,20 +55,23 @@ const props = defineProps({
   }
 })
 
-const form = ref(null)
-
 const emit = defineEmits(['input', 'submit'])
 
-const data: Translation = reactive((new Translation).init(props.project.id, "", props.project.locales))
+const form = ref(null)
+
+const data = reactive((new Translation).init(props.project.id, "", props.project.locales))
 
 const keyRules = [
   (v) => !!v || "Key is required"
 ]
 
-const clear = () => form.value.reset()
+const clear = () => {
+  data.init(props.project.id, "", props.project.locales)
+  form.value.resetValidation()
+}
 const submit = () => {
   if(form.value.validate()) {
-    emit('submit', data)
+    emit('submit', data.clone())
   }
 }
 defineExpose({

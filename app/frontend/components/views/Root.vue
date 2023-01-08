@@ -21,8 +21,7 @@
           >
             <v-icon>mdi-plus</v-icon>
           </v-btn>
-
-        <project-dialog-new v-model="show_project_new_dialog" />
+          <project-dialog-new v-model="show_project_new_dialog" />
         </v-list-item>
       </v-list>
     </template>
