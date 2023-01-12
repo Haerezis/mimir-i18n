@@ -38,9 +38,67 @@ class Api::V1::Project::TranslationsController < Api::V1::ApplicationController
     render json: @translation
   end
 
+  def destroy
+    @translation.destroy
+
+    head :no_content
+  end
+
+  def do_many
+    items = JSON.parse(request.raw_post)
+    if !items.is_a?(Array)
+      raise JSON::ParserError.new
+    end
+
+    failed = false
+    retvals = []
+
+    ApplicationRecord.transaction do
+      items.each do |item|
+        id = item["id"]
+        action = item["action"]
+        data = item["data"]
+
+        begin
+          res = nil
+          case action
+          when "create"
+            res = do_many_create(data)
+          when "update"
+            res = do_many_update(data)
+          when "delete"
+            res = do_many_delete(data)
+          else
+            raise "Cannot handle action '#{action}'"
+          end
+
+          item.merge!(
+            status: "success",
+            retval: res,
+          )
+        rescue => e
+          failed = true
+          item.merge!(
+            status: "error",
+            error_messages: [e.to_s],
+          )
+        end
+      end
+
+      if failed
+        raise ActiveRecord::Rollback
+      end
+    end
+
+    if failed
+      render status: :bad_request, json: items
+    else
+      render json: items
+    end
+  end
 
   def update_many
-    items = JSON.parse(raw_post)
+    items = JSON.parse(request.raw_post)
     if !items.is_a?(Hash)
       raise JSON::ParserError.new
     end
@@ -77,34 +135,6 @@ class Api::V1::Project::TranslationsController < Api::V1::ApplicationController
     bad_request!("Request body should have been a JSON array")
   end
 
-
-
-  def destroy
-    @translation.destroy
-
-    head :no_content
-  end
-
-  def destroy_many
-    @translations.each(&:destroy)
-
-    head :no_content
-  end
-
-  def update_key
-    old_key = params[:old].presence
-    new_key = params[:new].presence
-
-    raise ActionController::ParameterMissing.new(:old) if old_key.nil?
-    raise ActionController::ParameterMissing.new(:new) if new_key.nil?
-
-    translation = @project.translations.find_by(key: old_key)
-    translation.key = new_key
-    translation.save!
-
-    render json: translation
-  end
-
   protected
   def set_project
     @project = Project.find(params.require(:project_id))
@@ -138,4 +168,70 @@ class Api::V1::Project::TranslationsController < Api::V1::ApplicationController
       @translations = @translations.where(key: @keys)
     end
   end
+
+
+  # Data:
+  # {
+  #   key: <Translation#key>,
+  #   values: {
+  #     locale: <TranslationValue#locale>
+  #     value: <TranslationValue#value>
+  #   }
+  # }
+  def do_many_create(data)
+    translation = @project.translations.new
+
+    translation.key = data["key"]
+
+    translation.save!
+
+    (data["values"] || []).each do |value|
+      translation_value = translation.values.new
+
+      translation_value.locale = value["locale"]
+      translation_value.value = value["value"]
+
+      translation_value.save!
+    end
+
+    translation
+  end
+
+  # Data :
+  # {
+  #   id: <Translation#id>,
+  #   key?: <Translation#key>,
+  #   values: [
+  #     {
+  #       id: <TranslationValue#id>,
+  #       value: <TranslationValue#value>
+  #     }
+  #   ]
+  # }
+  def do_many_update(data)
+    translation = @project.translations.find(data["id"])
+
+    if data.key?("key")
+      translation.key = data["key"]
+    end
+    translation.save!
+
+    (data["values"] || []).each do |value|
+      translation_value = translation.values.find(value["id"])
+      if value.key?("value")
+        translation_value.value = value["value"]
+      end
+      translation_value.save!
+    end
+
+    translation
+  end
+
+  # Data:
+  #   <Translation#id>
+  def do_many_delete(data)
+    translation = @project.translations.find(data)
+    translation.destroy!
+  end
+
 end

@@ -10,9 +10,8 @@ Rails.application.routes.draw do
         scope module: :project do
           resources :translations do
             collection do
+              post :do_many
               patch :update, action: :update_many
-              delete :destroy, action: :destroy_many
-              patch :update_key
             end
           end
         end

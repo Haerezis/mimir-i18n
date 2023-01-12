@@ -1,7 +1,7 @@
 <template>
   <v-card width="100%" class="card-hover" :color="color">
     <v-btn
-      v-if="status != 'deleted'"
+      v-if="status != 'to_delete'"
       icon
       class="card-menu-btn"
       @click.prevent="emit('delete', value)"
@@ -36,6 +36,17 @@
           </v-col>
 
           <v-col>
+            <v-textarea
+              v-if="show_original"
+              v-model="original.values[locale].value"
+              label="Original"
+              disabled
+              rows="1"
+              auto-grow
+              hide-details
+              counter
+              class="pt-0 pb-2 mt-0"
+            />
             <input-textarea-diff
               v-model="value.values[locale].value"
               :original="original ? original.values[locale].value : null"
@@ -71,6 +82,10 @@ const props = defineProps({
   locales: {
     type: Array as PropType<string[]>,
     required: true
+  },
+  show_original: {
+    type: Boolean,
+    default: false,
   }
 })
 
@@ -79,9 +94,9 @@ const emit = defineEmits(['delete'])
 const translation_values = computed(() => props.locales.map((locale) => props.value.values[locale]))
 
 const colors = {
-  new: "green",
-  dirty: "yellow",
-  deleted: "red"
+  to_create: "green",
+  to_update: "yellow",
+  to_delete: "red"
 }
 const color = computed(() => colors[props.status])
 </script>

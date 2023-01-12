@@ -34,8 +34,12 @@ export class TranslationValue {
     return clone
   }
 
-  public get is_new() {
-    return !this.id
+  public to_json() {
+    return {
+      id: this.id,
+      locale: this.locale,
+      value: this.value,
+    }
   }
 }
 

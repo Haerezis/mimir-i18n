@@ -6,7 +6,7 @@ export interface ApiTranslation {
   id: number;
   project_id: number;
   key: string;
-  values: { [key: string]: ApiTranslationValue; };
+  values: ApiTranslationValue[];
 }
 
 export class Translation {
@@ -38,9 +38,9 @@ export class Translation {
     this.id = data.id
     this.project_id = data.project_id
     this.key = data.key
-    Object.entries(data.values).forEach(([locale, value_data]) => {
+    data.values.forEach((value_data) => {
       const value = new TranslationValue().init_from_api(value_data)
-      this.values[locale] = value
+      this.values[value.locale] = value
     })
     
     return this
@@ -60,8 +60,12 @@ export class Translation {
     return clone
   }
 
-  public get is_new() {
-    return !this.id
+  public to_json() {
+    return {
+      id: this.id,
+      key: this.key,
+      values: Object.values(this.values).map((value) => value.to_json())
+    }
   }
 }
 

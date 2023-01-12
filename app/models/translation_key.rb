@@ -9,7 +9,7 @@ class TranslationKey < ApplicationRecord
         :project_id,
         :key,
       )
-      json.values( values.map {|v| [v.locale, v]}.to_h )
+      json.values( values.map(&:as_json) )
     end.attributes!
   end
 end
