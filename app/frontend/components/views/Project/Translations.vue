@@ -1,22 +1,6 @@
 <template>
-<div>
-  <v-btn
-    @click="show_translation_new_dialog = true"
-    rounded
-  >
-    <v-icon>mdi-plus</v-icon>
-    New Translation
-  </v-btn>
-  <translation-dialog-new v-model="show_translation_new_dialog" :project="project" />
-
-  <v-btn
-    @click="save_modifications"
-    rounded
-  >
-    Save Modifications
-  </v-btn>
-
-  <v-list>
+<div class="content">
+  <v-list class="mb-16">
     <v-list-item
       v-for="translation in translations"
       :key="translation.uuid"
@@ -33,6 +17,34 @@
       />
     </v-list-item>
   </v-list>
+
+  <v-btn
+    rounded
+    fixed
+    bottom
+    class="new-btn mb-2"
+    @click="show_translation_new_dialog = true"
+  >
+    <v-icon>mdi-plus</v-icon>
+    New Translation
+  </v-btn>
+  <translation-dialog-new v-model="show_translation_new_dialog" :project="project" />
+
+  <v-slide-y-reverse-transition>
+    <v-btn
+      v-if="show_save_btn"
+      rounded
+      fixed
+      bottom
+      right
+      class="mb-2"
+      @click="save_modifications"
+    >
+      <v-icon>mdi-content-save-outline</v-icon>
+      Save
+    </v-btn>
+  </v-slide-y-reverse-transition>
+
 </div>
 </template>
 
@@ -79,4 +91,18 @@ const save_modifications = () => {
     .then(() => console.log("success"))
     .catch(() => console.log("error"))
 }
+
+const show_save_btn = computed(() => (
+  ( all_by_status.value.to_create.length +
+    all_by_status.value.to_update.length +
+    all_by_status.value.to_delete.length
+  ) > 0)
+)
 </script>
+
+<style scoped>
+.new-btn {
+  left: 50%;
+  transform: translateX(-50%);
+}
+</style>

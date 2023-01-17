@@ -57,6 +57,7 @@ export const useTranslationsStore = defineStore('translations', {
     }),
     all_by_status: (state) => ((project_id: number) => {
       const retval = {
+        untouched: [],
         to_create: [],
         to_update: [],
         to_delete: [],
@@ -64,7 +65,7 @@ export const useTranslationsStore = defineStore('translations', {
 
       state.all(project_id).forEach((translation) => {
         const status = state.translation_status(translation)
-        retval[status]?.push(translation)
+        retval[status || 'untouched'].push(translation)
       })
 
       return retval

@@ -1,23 +1,14 @@
 <template>
   <v-card width="100%" class="card-hover" :color="color">
     <v-btn
-      v-if="status != 'to_delete'"
-      icon
-      class="card-menu-btn"
-      @click.prevent="emit('delete', value)"
+      class="delete-btn"
+      depressed
+      @click.prevent="emit(delete_btn.event, value)"
     >
-      <v-icon>mdi-close</v-icon>
-    </v-btn>
-    <v-btn
-      v-else
-      icon
-      class="card-menu-btn"
-      @click.prevent="emit('undelete', value)"
-    >
-      <v-icon>mdi-check</v-icon>
+      <v-icon>{{ delete_btn.icon }}</v-icon>{{ delete_btn.text}}
     </v-btn>
 
-    <v-card-title class="ma-0 pr-10">
+    <v-card-title class="ma-0 mt-2 pr-10">
       <input-textfield-diff
         v-model="value.key"
         :original="original ? original.key : null"
@@ -99,10 +90,33 @@ const colors = {
   to_delete: "red"
 }
 const color = computed(() => colors[props.status])
+
+const delete_btn = computed(() => {
+  if(props.status == 'to_delete') {
+    return {
+      icon: "mdi-check",
+      text: "Cancel",
+      event: "undelete",
+    }
+  }
+  else {
+    return {
+      icon: "mdi-close",
+      text: "Delete",
+      event: "delete",
+    }
+  }
+})
 </script>
 
 <style scoped>
 .row + .row {
   margin-top: 0;
+}
+
+.delete-btn {
+  position: absolute;
+  top: 0px;
+  right: 0px;
 }
 </style>

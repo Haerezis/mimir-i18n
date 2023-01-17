@@ -17,11 +17,4 @@ export default {
 .card-hover:hover:before {
   opacity: .04;
 }
-
-.card-menu-btn {
-  position: absolute;
-  top: 0px;
-  right: 0px;
-}
-
 </style>

@@ -4,7 +4,7 @@
     width="100%"
     class="card-hover"
   >
-    <v-btn icon class="card-menu-btn" @click.prevent="">
+    <v-btn icon class="menu-btn" @click.prevent="">
       <v-icon>mdi-dots-vertical</v-icon>
     </v-btn>
 
@@ -41,3 +41,11 @@ const props = defineProps({
 
 const locales = computed(() => props.value.locales.map((locale) => ISO6391.getName(locale)))
 </script>
+
+<style scoped>
+.menu-btn {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+</style>
