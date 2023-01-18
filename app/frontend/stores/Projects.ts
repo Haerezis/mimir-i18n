@@ -39,6 +39,24 @@ export const useProjectsStore = defineStore('projects', {
         })
     },
 
+    update(id: number, data: { name: String;}) {
+      return axios.patch(Routes.api_v1_project_path(id), { name: data.name })
+        .then((response) => {
+          const project = response.data
+          this.all[project.id] = project
+          return project
+        })
+    },
+
+    update_locales(id: number, locales: String[]) {
+      return axios.patch(Routes.locales_api_v1_project_path(id), { locales: locales })
+        .then((response) => {
+          const project = response.data
+          this.all[project.id] = project
+          return project
+        })
+    },
+
     set_current_project(project: number | Project) {
       const id = (project instanceof number) ? project : project.id
       this.current_project_id = id

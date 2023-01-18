@@ -76,6 +76,7 @@ const translations_store = useTranslationsStore()
 translations_store.display_configuration.locales = props.project.locales
 
 watch(props.project, (new_value, old_value) => translations_store.display_configuration.locales = new_value.locales)
+watch(props.project.locales, (new_value, old_value) => translations_store.display_configuration.locales = new_value)
 </script>
 
 <style scoped>

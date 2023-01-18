@@ -1,5 +1,5 @@
 <template>
-  <v-card width="100%" class="card-hover" :color="color">
+  <v-card width="100%" :color="color">
     <v-btn
       class="delete-btn"
       depressed

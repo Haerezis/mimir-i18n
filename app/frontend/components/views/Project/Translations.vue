@@ -1,5 +1,5 @@
 <template>
-<div class="content">
+<div>
   <v-list class="mb-16">
     <v-list-item
       v-for="translation in translations"

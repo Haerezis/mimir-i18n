@@ -7,6 +7,10 @@ Rails.application.routes.draw do
     namespace :v1 do
       resource :current_user, only: [:show, :update], as: :current_user, controller: 'current_user'
       resources :projects do
+        member do
+          patch :locales, action: :update_locales
+        end
+
         scope module: :project do
           resources :translations do
             collection do

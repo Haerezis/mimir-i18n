@@ -38,6 +38,22 @@ class Api::V1::ProjectsController < Api::V1::ApplicationController
     render json: @project.as_json(user: current_user)
   end
 
+  def update_locales
+    locales = (params[:locales].presence || []).reject(&:blank?).map(&:downcase) & I18nData.languages.keys.map(&:downcase)
+
+    if locales.empty?
+      bad_request!("'locales' params empty")
+      return
+    end
+
+    if !@project.update_locales(locales)
+      bad_request!("Something went wrong during update")
+      return
+    end
+
+    render json: @project.reload.as_json(user: current_user)
+  end
+
   def destroy
     if @project.owner != current_user
       forbidden!
