@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_01_145906) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_29_164448) do
+  create_table "access_keys", force: :cascade do |t|
+    t.integer "project_id"
+    t.string "name", null: false
+    t.string "value", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id", "value"], name: "index_access_keys_on_project_id_and_value", unique: true
+    t.index ["project_id"], name: "index_access_keys_on_project_id"
+  end
+
   create_table "project_locales", force: :cascade do |t|
     t.string "code", null: false
     t.integer "project_id"
@@ -25,6 +35,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_01_145906) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["owner_id"], name: "index_projects_on_owner_id"
+  end
+
+  create_table "releases", force: :cascade do |t|
+    t.integer "project_id"
+    t.text "export_data", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_releases_on_project_id"
   end
 
   create_table "translation_keys", force: :cascade do |t|
@@ -80,8 +98,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_01_145906) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "access_keys", "projects"
   add_foreign_key "project_locales", "projects"
   add_foreign_key "projects", "users", column: "owner_id"
+  add_foreign_key "releases", "projects"
   add_foreign_key "translation_keys", "projects"
   add_foreign_key "translation_values", "translation_keys"
   add_foreign_key "user_project_permissions", "projects"

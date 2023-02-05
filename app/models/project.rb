@@ -6,6 +6,9 @@ class Project < ApplicationRecord
   has_many :locales, class_name: "Project::Locale", dependent: :destroy
   has_many :translations, class_name: "TranslationKey", dependent: :destroy
 
+  has_many :access_keys, dependent: :destroy
+  has_many :releases, dependent: :destroy
+
   def as_json(opts = {})
     user = opts[:user]
     with_permissions = opts.dig(:with_permissions, false)
@@ -72,5 +75,18 @@ class Project < ApplicationRecord
     end
 
     return true
+  end
+
+  def export
+    retval = {}.extend XKeys::Hash
+
+    translations.each do |tk|
+      tk.values.each do |tv|
+        #use xkeys gem for access
+        retval[tv.locale, *tk.split_key] = tv.value
+      end
+    end
+
+    retval
   end
 end

@@ -50,6 +50,7 @@ const routes = [
         name: 'project-releases',
         path: 'releases',
         component: ProjectReleases,
+        beforeEnter: Guards.fetchReleases,
       },
       {
         name: 'project-import',

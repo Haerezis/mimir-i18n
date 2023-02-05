@@ -1,5 +1,4 @@
-class Api::V1::Project::TranslationsController < Api::V1::ApplicationController
-  before_action :set_project
+class Api::V1::Project::TranslationsController < Api::V1::Project::BaseController
   before_action :set_translation, only: [:update, :destroy]
   before_action :set_translations, only: [:index, :destroy_many]
 
@@ -136,14 +135,6 @@ class Api::V1::Project::TranslationsController < Api::V1::ApplicationController
   end
 
   protected
-  def set_project
-    @project = Project.find(params.require(:project_id))
-    if @project.owner != current_user
-      bad_request!("Current user don't have permission for this project")
-      return
-    end
-  end
-
   def set_translation
     @translation = @project.translations.find(params.require(:id))
   end

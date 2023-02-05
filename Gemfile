@@ -76,3 +76,5 @@ gem "uri", "0.10.0"
 gem "i18n_data", "~> 0.17.1"
 
 gem "js-routes", "~> 2.2"
+
+gem "xkeys", "~> 2.2"

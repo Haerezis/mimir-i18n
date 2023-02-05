@@ -1,6 +1,8 @@
 import { useCurrentUserStore } from '@/stores/CurrentUser.ts'
 import { useProjectsStore } from '@/stores/Projects.ts'
 import { useTranslationsStore } from '@/stores/Translations.ts'
+import { useReleasesStore } from '@/stores/Releases.ts'
+import { useAccessKeysStore } from '@/stores/AccessKeys.ts'
 
 
 function defaultErrorHandler(error) {
@@ -39,7 +41,22 @@ function fetchTranslations(to, from, next) {
     .catch(defaultErrorHandler)
 }
 
+function fetchReleases(to, from, next) {
+  const releases_store = useReleasesStore()
+  const access_keys_store = useAccessKeysStore()
+
+  return Promise.all([
+    access_keys_store.load_all(to.params.id),
+    releases_store.load_all(to.params.id),
+  ])
+    .then(() => {
+      next()
+    })
+    .catch(defaultErrorHandler)
+}
+
 export default {
   fetchInitialData,
   fetchTranslations,
+  fetchReleases,
 }

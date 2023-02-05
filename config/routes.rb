@@ -12,6 +12,14 @@ Rails.application.routes.draw do
         end
 
         scope module: :project do
+          resources :access_keys, only: [:index, :show, :create, :destroy]
+
+          resources :releases, only: [:index, :show, :create, :destroy] do
+            member do
+              get :export
+            end
+          end
+
           resources :translations do
             collection do
               post :do_many
