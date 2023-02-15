@@ -30,14 +30,14 @@ export const useAccessKeysStore = defineStore('access_keys', {
           })
         })
     },
-    create(project_id: number) {
-      return axios.post(Routes.api_v1_project_access_keys_path(project_id))
+    create(project_id: number, data: { name: string }) {
+      return axios.post(Routes.api_v1_project_access_keys_path(project_id), data)
         .then((response) => {
           const access_key_data = response.data
           Vue.set(this.collection, access_key_data.id, access_key_data)
         })
     },
-    update(id: number, data: { name?: string }) {
+    update(id: number, data: { name?: string, value?: string }) {
       const access_key = this.collection[id]
 
       if (!access_key) {

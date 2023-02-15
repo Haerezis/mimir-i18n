@@ -12,7 +12,7 @@ Rails.application.routes.draw do
         end
 
         scope module: :project do
-          resources :access_keys, only: [:index, :show, :create, :destroy]
+          resources :access_keys, only: [:index, :show, :create,:update, :destroy]
 
           resources :releases, only: [:index, :show, :create, :destroy] do
             member do

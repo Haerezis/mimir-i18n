@@ -1,5 +1,5 @@
 class Api::V1::Project::AccessKeysController < Api::V1::Project::BaseController
-  before_action :set_access_key, only: [:show, :destroy]
+  before_action :set_access_key, only: [:show, :update, :destroy]
 
   def index
     render json: @project.access_keys
@@ -14,6 +14,15 @@ class Api::V1::Project::AccessKeysController < Api::V1::Project::BaseController
     key = params[:key].presence
 
     @access_key = AccessKey.factory_create(@project, name, key)
+
+    render json: @access_key
+  end
+
+  def update
+    @access_key.assign_attributes(
+      params.permit(:name, :value)
+    )
+    @access_key.save!
 
     render json: @access_key
   end

@@ -3,6 +3,7 @@
   <v-card class="ma-10">
     <access-key-table
       :items="access_keys"
+      :project_id="project.id"
       @delete="delete_access_key"
       @update="update_access_key"
     />
