@@ -109,7 +109,7 @@ export function useTranslationsStore(project_id: number, ...args: any[]) {
         }))
       )
 
-      useFetchPOST(apiRoutes.do_many_api_v1_project_translations_path(project_id), { body: request_data })
+      useFetchPOST(apiRoutes.commit_api_v1_project_translations_path(project_id), { body: request_data })
         .then((response) => {
           (response.data.value ?? []).forEach((item: any) => {
             if (item.action == 'create') {

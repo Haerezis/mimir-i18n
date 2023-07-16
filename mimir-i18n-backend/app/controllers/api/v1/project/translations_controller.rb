@@ -43,7 +43,8 @@ class Api::V1::Project::TranslationsController < Api::V1::Project::BaseControlle
     head :no_content
   end
 
-  def do_many
+  # This action create/update/delete multiple translations in one API call
+  def commit
     items = JSON.parse(request.raw_post)
     if !items.is_a?(Array)
       raise JSON::ParserError.new
@@ -62,11 +63,11 @@ class Api::V1::Project::TranslationsController < Api::V1::Project::BaseControlle
           res = nil
           case action
           when "create"
-            res = do_many_create(data)
+            res = commit_create(data)
           when "update"
-            res = do_many_update(data)
+            res = commit_update(data)
           when "delete"
-            res = do_many_delete(data)
+            res = commit_delete(data)
           else
             raise "Cannot handle action '#{action}'"
           end
@@ -94,44 +95,6 @@ class Api::V1::Project::TranslationsController < Api::V1::Project::BaseControlle
     else
       render json: items
     end
-  end
-
-  def update_many
-    items = JSON.parse(request.raw_post)
-    if !items.is_a?(Hash)
-      raise JSON::ParserError.new
-    end
-
-    retvals = []
-    items.each_with_index do |id, update_data|
-
-      translation = nil
-
-      begin
-        translation = @project.translations.find(id)
-
-        key = update_data["key"].presence
-        if key
-          translation.key = key
-          translation.save!
-        end
-
-        values = update_data["values"] || {}
-        values.each do |locale, value|
-          translation_value = translation.find_by(locale: locale)
-          translation_value.value = value
-          translation_value.save!
-        end
-
-        retvals.push(translation)
-      rescue => e
-        retvals.push(e.to_str)
-      end
-    end
-
-    render json: retvals
-  rescue JSON::ParserError => e
-    bad_request!("Request body should have been a JSON array")
   end
 
   protected
@@ -169,7 +132,7 @@ class Api::V1::Project::TranslationsController < Api::V1::Project::BaseControlle
   #     value: <TranslationValue#value>
   #   }
   # }
-  def do_many_create(data)
+  def commit_create(data)
     translation = @project.translations.new
 
     translation.key = data["key"]
@@ -199,7 +162,7 @@ class Api::V1::Project::TranslationsController < Api::V1::Project::BaseControlle
   #     }
   #   ]
   # }
-  def do_many_update(data)
+  def commit_update(data)
     translation = @project.translations.find(data["id"])
 
     if data.key?("key")
@@ -220,7 +183,7 @@ class Api::V1::Project::TranslationsController < Api::V1::Project::BaseControlle
 
   # Data:
   #   <Translation#id>
-  def do_many_delete(data)
+  def commit_delete(data)
     translation = @project.translations.find(data)
     translation.destroy!
   end

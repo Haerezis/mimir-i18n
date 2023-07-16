@@ -31,8 +31,7 @@ Rails.application.routes.draw do
 
           resources :translations do
             collection do
-              post :do_many
-              patch :update, action: :update_many
+              post :commit
             end
           end
         end
