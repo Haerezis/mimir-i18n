@@ -44,3 +44,6 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
 end
+
+Rails.application.routes.default_url_options[:host] = Rails.application.config.action_mailer.default_url_options[:host]
+Rails.application.routes.default_url_options[:port] = Rails.application.config.action_mailer.default_url_options[:port]

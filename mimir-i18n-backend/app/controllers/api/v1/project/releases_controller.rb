@@ -2,7 +2,7 @@ class Api::V1::Project::ReleasesController < Api::V1::Project::BaseController
   before_action :set_release, only: [:show, :destroy]
 
   def index
-    render json: @project.releases
+    render json: [Release.current(@project), *@project.releases]
   end
 
   def show
@@ -10,7 +10,12 @@ class Api::V1::Project::ReleasesController < Api::V1::Project::BaseController
   end
 
   def create
-    @release = Release.factory_create(@project)
+    message = params.require(:message)
+
+    @release = Release.factory_create(
+      @project,
+      message
+    )
 
     render json: @release
   end
@@ -25,19 +30,19 @@ class Api::V1::Project::ReleasesController < Api::V1::Project::BaseController
     id = params.require(:id)
 
     data, filename =
-      if id == "HEAD"
-        [@project.export.to_json, "#{@project.id}-HEAD-I18n.json"]
+      if id == "CURRENT"
+        [@project.export.to_json, "#{@project.id}-CURRENT-I18n.json"]
       else
-        release = get_release(id)
-        [@release.export_data, "#{@project.id}-#{@release.id}-I18n.json"]
+        @release = get_release(id)
+        [@release.export_data, "#{@project.id}-#{@release.id}-#{@release.hash}-I18n.json"]
       end
 
-    send_data @release.export_data, filename: filename, type: Mime[:json]
+    send_data data, filename: filename, type: Mime[:json]
   end
 
   protected
   def get_release(id)
-    if id == "LAST"
+    if id == "HEAD"
       @project.release.order(created_at: :desc).first
     else
       @project.releases.find(id)

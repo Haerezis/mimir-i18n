@@ -206,23 +206,23 @@ export const cancel_user_registration_path: ((
 
 /**
  * Generates rails route to
- * /api/v1/users/sign_out(.:format)
+ * /api/v1/projects/:project_id/translations/commit(.:format)
+ * @param {any} project_id
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const destroy_user_session_path: ((
+export const commit_api_v1_project_translations_path: ((
+  project_id: RequiredRouteParameter,
   options?: {format?: OptionalRouteParameter} & RouteOptions
 ) => string) & RouteHelperExtras;
 
 /**
  * Generates rails route to
- * /api/v1/projects/:project_id/translations/do_many(.:format)
- * @param {any} project_id
+ * /api/v1/users/sign_out(.:format)
  * @param {object | undefined} options
  * @returns {string} route path
  */
-export const do_many_api_v1_project_translations_path: ((
-  project_id: RequiredRouteParameter,
+export const destroy_user_session_path: ((
   options?: {format?: OptionalRouteParameter} & RouteOptions
 ) => string) & RouteHelperExtras;
 
@@ -421,36 +421,6 @@ export const rails_direct_uploads_path: ((
 export const rails_disk_service_path: ((
   encoded_key: RequiredRouteParameter,
   filename: RequiredRouteParameter,
-  options?: {format?: OptionalRouteParameter} & RouteOptions
-) => string) & RouteHelperExtras;
-
-/**
- * Generates rails route to
- * /rails/info(.:format)
- * @param {object | undefined} options
- * @returns {string} route path
- */
-export const rails_info_path: ((
-  options?: {format?: OptionalRouteParameter} & RouteOptions
-) => string) & RouteHelperExtras;
-
-/**
- * Generates rails route to
- * /rails/info/properties(.:format)
- * @param {object | undefined} options
- * @returns {string} route path
- */
-export const rails_info_properties_path: ((
-  options?: {format?: OptionalRouteParameter} & RouteOptions
-) => string) & RouteHelperExtras;
-
-/**
- * Generates rails route to
- * /rails/info/routes(.:format)
- * @param {object | undefined} options
- * @returns {string} route path
- */
-export const rails_info_routes_path: ((
   options?: {format?: OptionalRouteParameter} & RouteOptions
 ) => string) & RouteHelperExtras;
 

@@ -603,20 +603,20 @@ export const cancel_user_registration_path = __jsr.r({"format":{}}, [2,[7,"/"],[
 
 /**
  * Generates rails route to
+ * /api/v1/projects/:project_id/translations/commit(.:format)
+ * @param {any} project_id
+ * @param {object | undefined} options
+ * @returns {string} route path
+ */
+export const commit_api_v1_project_translations_path = __jsr.r({"project_id":{"r":true},"format":{"d":"json"}}, [2,[7,"/"],[2,[6,"api"],[2,[7,"/"],[2,[6,"v1"],[2,[7,"/"],[2,[6,"projects"],[2,[7,"/"],[2,[3,"project_id"],[2,[7,"/"],[2,[6,"translations"],[2,[7,"/"],[2,[6,"commit"],[1,[2,[8,"."],[3,"format"]]]]]]]]]]]]]]]);
+
+/**
+ * Generates rails route to
  * /api/v1/users/sign_out(.:format)
  * @param {object | undefined} options
  * @returns {string} route path
  */
 export const destroy_user_session_path = __jsr.r({"format":{}}, [2,[7,"/"],[2,[6,"api"],[2,[7,"/"],[2,[6,"v1"],[2,[7,"/"],[2,[6,"users"],[2,[7,"/"],[2,[6,"sign_out"],[1,[2,[8,"."],[3,"format"]]]]]]]]]]]);
-
-/**
- * Generates rails route to
- * /api/v1/projects/:project_id/translations/do_many(.:format)
- * @param {any} project_id
- * @param {object | undefined} options
- * @returns {string} route path
- */
-export const do_many_api_v1_project_translations_path = __jsr.r({"project_id":{"r":true},"format":{"d":"json"}}, [2,[7,"/"],[2,[6,"api"],[2,[7,"/"],[2,[6,"v1"],[2,[7,"/"],[2,[6,"projects"],[2,[7,"/"],[2,[3,"project_id"],[2,[7,"/"],[2,[6,"translations"],[2,[7,"/"],[2,[6,"do_many"],[1,[2,[8,"."],[3,"format"]]]]]]]]]]]]]]]);
 
 /**
  * Generates rails route to
@@ -767,30 +767,6 @@ export const rails_direct_uploads_path = __jsr.r({"format":{}}, [2,[7,"/"],[2,[6
  * @returns {string} route path
  */
 export const rails_disk_service_path = __jsr.r({"encoded_key":{"r":true},"filename":{"r":true},"format":{}}, [2,[7,"/"],[2,[6,"rails"],[2,[7,"/"],[2,[6,"active_storage"],[2,[7,"/"],[2,[6,"disk"],[2,[7,"/"],[2,[3,"encoded_key"],[2,[7,"/"],[2,[5,[3,"filename"]],[1,[2,[8,"."],[3,"format"]]]]]]]]]]]]]);
-
-/**
- * Generates rails route to
- * /rails/info(.:format)
- * @param {object | undefined} options
- * @returns {string} route path
- */
-export const rails_info_path = __jsr.r({"format":{}}, [2,[7,"/"],[2,[6,"rails"],[2,[7,"/"],[2,[6,"info"],[1,[2,[8,"."],[3,"format"]]]]]]]);
-
-/**
- * Generates rails route to
- * /rails/info/properties(.:format)
- * @param {object | undefined} options
- * @returns {string} route path
- */
-export const rails_info_properties_path = __jsr.r({"format":{}}, [2,[7,"/"],[2,[6,"rails"],[2,[7,"/"],[2,[6,"info"],[2,[7,"/"],[2,[6,"properties"],[1,[2,[8,"."],[3,"format"]]]]]]]]]);
-
-/**
- * Generates rails route to
- * /rails/info/routes(.:format)
- * @param {object | undefined} options
- * @returns {string} route path
- */
-export const rails_info_routes_path = __jsr.r({"format":{}}, [2,[7,"/"],[2,[6,"rails"],[2,[7,"/"],[2,[6,"info"],[2,[7,"/"],[2,[6,"routes"],[1,[2,[8,"."],[3,"format"]]]]]]]]]);
 
 /**
  * Generates rails route to

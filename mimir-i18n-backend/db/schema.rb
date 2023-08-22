@@ -45,6 +45,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_23_204927) do
 
   create_table "releases", force: :cascade do |t|
     t.integer "project_id"
+    t.string "sha"
+    t.text "message", null: false
     t.text "export_data", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
