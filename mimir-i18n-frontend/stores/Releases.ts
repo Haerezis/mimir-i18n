@@ -24,7 +24,7 @@ export function useReleasesStore(project_id: number, ...args: any[]) {
       projects.forEach(commit)
     }
 
-    const create = async (data: { name: string }) => {
+    const create = async (data: { message: string }) => {
       const response = await useFetchPOST<Release>(apiRoutes.api_v1_project_releases_path(project_id), { body: data })
       commit(response.data.value)
     }
@@ -38,8 +38,6 @@ export function useReleasesStore(project_id: number, ...args: any[]) {
       delete collection[id]
     }
 
-    const export_url = (id?: number) => apiRoutes.export_api_v1_project_release_path(project_id, id ?? "HEAD")
-
-    return { collection, all, load_all, create, destroy, export_url }
+    return { collection, all, load_all, create, destroy }
   })(...args)
 }
