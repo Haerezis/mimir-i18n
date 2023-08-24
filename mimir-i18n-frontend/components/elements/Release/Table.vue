@@ -17,7 +17,10 @@
     </template>
 
     <template #item.sha="{ item }">
-      {{ item.raw.sha_short }}
+      <div class="py-3">
+        {{ item.raw.sha_short }}
+        <pre v-if="item.raw.message" class="message pa-2 mt-1">{{ item.raw.message }}</pre>
+      </div>
     </template>
 
 
@@ -94,9 +97,9 @@ const props = defineProps({
 const emit = defineEmits(['delete'])
 
 const headers = [
-  { title: 'Name', key: 'sha' },
+  { title: 'Name', key: 'sha', width: '35%' },
   { title: 'Created at', key: 'created_at' },
-  { title: 'Export', key: 'export', width: '60%', sortable: false },
+  { title: 'Export', key: 'export', width: '45%', sortable: false },
   { title: 'Actions', key: 'actions', sortable: false },
 ]
 
@@ -131,3 +134,12 @@ const show_release_export = async (release) => {
   window.open(blob_url, '_blank').focus();
 }
 </script>
+
+<style>
+.message {
+ word-break: normal;
+ overflow-x: auto;
+ border-left: 3px solid gainsboro;
+ color: grey
+}
+</style>
