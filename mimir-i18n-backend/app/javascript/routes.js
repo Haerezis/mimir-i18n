@@ -770,6 +770,30 @@ export const rails_disk_service_path = __jsr.r({"encoded_key":{"r":true},"filena
 
 /**
  * Generates rails route to
+ * /rails/info(.:format)
+ * @param {object | undefined} options
+ * @returns {string} route path
+ */
+export const rails_info_path = __jsr.r({"format":{}}, [2,[7,"/"],[2,[6,"rails"],[2,[7,"/"],[2,[6,"info"],[1,[2,[8,"."],[3,"format"]]]]]]]);
+
+/**
+ * Generates rails route to
+ * /rails/info/properties(.:format)
+ * @param {object | undefined} options
+ * @returns {string} route path
+ */
+export const rails_info_properties_path = __jsr.r({"format":{}}, [2,[7,"/"],[2,[6,"rails"],[2,[7,"/"],[2,[6,"info"],[2,[7,"/"],[2,[6,"properties"],[1,[2,[8,"."],[3,"format"]]]]]]]]]);
+
+/**
+ * Generates rails route to
+ * /rails/info/routes(.:format)
+ * @param {object | undefined} options
+ * @returns {string} route path
+ */
+export const rails_info_routes_path = __jsr.r({"format":{}}, [2,[7,"/"],[2,[6,"rails"],[2,[7,"/"],[2,[6,"info"],[2,[7,"/"],[2,[6,"routes"],[1,[2,[8,"."],[3,"format"]]]]]]]]]);
+
+/**
+ * Generates rails route to
  * /rails/mailers(.:format)
  * @param {object | undefined} options
  * @returns {string} route path
